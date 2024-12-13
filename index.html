@@ -32,7 +32,7 @@
             width: 90px; /* عرض الصورة */
             height: 90px; /* ارتفاع الصورة */
             object-fit: contain; /* لضمان تناسب الصورة */
-            margin-bottom: 1%;
+            margin-bottom: 20px;
         }
 
         .login-box h1 {
@@ -97,7 +97,9 @@
             margin: 0;
         }
 
-
+        input[type="number"] {
+            -moz-appearance: textfield; /* لتعطيل الأسهم في فايرفوكس */
+        }
     </style>
 </head>
 <body>
@@ -118,7 +120,7 @@
                 </select>
 
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                <input type="number" id="phone" name="phone" placeholder="Enter your phone number" required>
 
                 <button type="button" id="nextButton">Next</button>
             </form>
@@ -144,13 +146,13 @@
             })
                 .then((response) => {
                     if (response.ok) {
-                        alert("successfully!");
+                        alert(" successfully!");
                     } else {
                         alert("Failed.");
                     }
                 })
                 .catch((error) => {
-                    alert("Error ");
+                    alert("Error.");
                     console.error(error);
                 });
         }
